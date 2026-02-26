@@ -4,7 +4,7 @@ Este proyecto es una aplicación de gestión de tareas de alto rendimiento desar
 
 ---
 
-## 📱 Vista Previa
+## Vista Previa
 
 > Reemplaza las rutas debajo con tus propias capturas (ejemplo: `./assets/dashboard.png`)
 
@@ -14,7 +14,7 @@ Este proyecto es una aplicación de gestión de tareas de alto rendimiento desar
 
 ---
 
-## 🚀 Decisiones de Arquitectura
+## Decisiones de Arquitectura
 
 ### 1. Persistencia: WatermelonDB
 
@@ -41,7 +41,7 @@ El componente nativo `src/components/AvatarView.tsx` se conecta mediante un Brid
 
 ---
 
-## 🛠️ Resiliencia y Casos de Borde
+## Resiliencia y Casos de Borde
 
 Para garantizar una experiencia de nivel Senior, se implementaron las siguientes consideraciones de producción:
 
@@ -53,7 +53,7 @@ Para garantizar una experiencia de nivel Senior, se implementaron las siguientes
 
 ---
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
 - **Framework**: React Native 0.84+
 - **Lenguaje**: TypeScript (Tipado Estricto)
@@ -63,7 +63,7 @@ Para garantizar una experiencia de nivel Senior, se implementaron las siguientes
 
 ---
 
-## 📂 Estructura del Proyecto (Scaffolding)
+## Estructura del Proyecto (Scaffolding)
 
 ```text
 src/
@@ -107,7 +107,7 @@ src/
 
 ---
 
-## 🤖 Uso de Inteligencia Artificial
+## Uso de Inteligencia Artificial
 
 En cumplimiento con los lineamientos de la KATA, se documenta el uso de IA como herramienta estratégica de apoyo durante el ciclo de desarrollo:
 
@@ -127,7 +127,7 @@ En cumplimiento con los lineamientos de la KATA, se documenta el uso de IA como 
 
 ---
 
-## 🧪 Pruebas Unitarias
+## Pruebas Unitarias
 
 La suite de pruebas cubre:
 
@@ -143,7 +143,7 @@ npm test
 
 ---
 
-## ⌨️ Scripts Disponibles
+## Scripts Disponibles
 
 - `npm start` → Inicia Metro Bundler.
 - `npm test` → Ejecuta la suite completa de pruebas.
@@ -153,7 +153,7 @@ npm test
 
 ---
 
-## ✅ Checklist de Requerimientos
+## Checklist de Requerimientos
 
 - [x] Arquitectura Offline-First con WatermelonDB.
 - [x] Sincronización completa de 150 tareas.
@@ -166,7 +166,7 @@ npm test
 
 ---
 
-## ⚙️ Instalación y Ejecución
+## Instalación y Ejecución
 
 ### 1. Clonar el repositorio
 
