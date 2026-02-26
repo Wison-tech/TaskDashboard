@@ -1,97 +1,219 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# TaskDashboard - Agile Mobile KATA
 
-# Getting Started
+Este proyecto es una aplicación de gestión de tareas de alto rendimiento desarrollada con **React Native**, diseñada bajo una arquitectura **Offline-First**. La aplicación garantiza una experiencia de usuario fluida mediante la sincronización masiva de datos y el uso de componentes nativos personalizados.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## 📱 Vista Previa
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+> Reemplaza las rutas debajo con tus propias capturas (ejemplo: `./assets/dashboard.png`)
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+| Dashboard & Filtros | Avatar Nativo | Adjuntos (Cámara) |
+|---|---|---|
+| ![Dashboard](./assets/dashboard.png) | ![Avatar](./assets/avatar-native.png) | ![Camera](./assets/camera-module.png) |
 
-```sh
-# Using npm
-npm start
+---
 
-# OR using Yarn
-yarn start
+## 🚀 Decisiones de Arquitectura
+
+### 1. Persistencia: WatermelonDB
+
+Se seleccionó **WatermelonDB** sobre otras soluciones (como AsyncStorage o SQLite puro) por su capacidad de manejo de datos a gran escala:
+
+- **Arquitectura Offline-First**: La aplicación lee y escribe exclusivamente en la base de datos local, asegurando funcionalidad total sin conexión.
+- **Reactividad**: Utiliza observables para actualizar la interfaz de usuario automáticamente ante cambios en la base de datos local.
+- **Inserción Masiva (Batching)**: Permite procesar los 150 registros requeridos de forma asíncrona en una sola transacción, optimizando el rendimiento del hilo principal.
+
+---
+
+### 2. Sincronización Masiva
+
+La lógica implementada en `src/services/SyncService.ts` consume la API de **DummyJSON** utilizando el parámetro `limit=0`. Esto permite omitir la paginación por defecto y obtener la totalidad de los 150 registros necesarios para cumplir con los criterios de evaluación.
+
+---
+
+### 3. Native Bridge: AvatarView
+
+El componente nativo `src/components/AvatarView.tsx` se conecta mediante un Bridge para garantizar rendimiento y fidelidad visual:
+
+- **Android (Kotlin)**: Vista personalizada que genera iniciales y colores de fondo basados en un hash del nombre del usuario.
+- **iOS (Swift)**: Implementación nativa equivalente para asegurar paridad funcional en ambas plataformas.
+
+---
+
+## 🛠️ Resiliencia y Casos de Borde
+
+Para garantizar una experiencia de nivel Senior, se implementaron las siguientes consideraciones de producción:
+
+- **Manejo de Permisos**: Gestión proactiva de permisos de cámara en Android/iOS desde `useCamera.ts`.
+- **Persistencia de Fotos**: Las imágenes se almacenan localmente y se vinculan a la entidad `Task` en WatermelonDB.
+- **Pull-to-Refresh**: Sincronización manual que realiza merge inteligente evitando duplicación de registros.
+- **Validación de Datos Externos**: Limpieza de strings (`trim()`), validación estricta de tipos y normalización antes de persistencia.
+- **Control de Estados Vacíos**: Manejo visual para estados sin tareas o sin resultados filtrados.
+
+---
+
+## 🛠️ Stack Tecnológico
+
+- **Framework**: React Native 0.84+
+- **Lenguaje**: TypeScript (Tipado Estricto)
+- **Estado Global**: Zustand (`src/store/useUiStore.ts`)
+- **Persistencia**: WatermelonDB + SQLite
+- **Pruebas**: Jest + React Native Testing Library
+
+---
+
+## 📂 Estructura del Proyecto (Scaffolding)
+
+```text
+src/
+ ├── api/
+ │    ├── client.ts
+ │    └── taskApi.ts
+ │
+ ├── components/
+ │    ├── AvatarView.tsx
+ │    ├── filterTabs.tsx
+ │    └── TaskItem.tsx
+ │
+ ├── database/
+ │    ├── index.ts
+ │    ├── schema.ts
+ │    └── Task.ts
+ │
+ ├── hooks/
+ │    ├── useCamera.ts
+ │    ├── useFilter.ts
+ │    └── useTasks.ts
+ │
+ ├── navigation/
+ │    └── MainNavigator.tsx
+ │
+ ├── screens/
+ │    └── DashboardScreen.tsx
+ │
+ ├── services/
+ │    ├── SyncService.ts
+ │    └── __tests__/
+ │
+ ├── store/
+ │    └── useUiStore.ts
+ │
+ ├── types/
+ │    └── api.ts
+ │
+ └── types.ts
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## 🤖 Uso de Inteligencia Artificial
 
-### Android
+En cumplimiento con los lineamientos de la KATA, se documenta el uso de IA como herramienta estratégica de apoyo durante el ciclo de desarrollo:
 
-```sh
-# Using npm
-npm run android
+**Herramientas utilizadas**: ChatGPT-4 / Gemini 1.5 Pro  
 
-# OR using Yarn
-yarn android
+### Contribuciones principales
+
+- Resolución de conflictos de `peerDependencies` entre React 19 y WatermelonDB.
+- Generación de mocks para pruebas unitarias del motor de base de datos.
+- Optimización de lógica de batch insert para los 150 registros iniciales.
+
+### Supervisión Humana
+
+- Corrección manual de errores `TS2307`.
+- Validación de integridad de datos provenientes de DummyJSON.
+- Ajuste explícito del parámetro `limit=0`.
+
+---
+
+## 🧪 Pruebas Unitarias
+
+La suite de pruebas cubre:
+
+- Cambio de estado (`toggleComplete`) en el modelo `Task`.
+- Transformación y limpieza de datos de la API.
+- Persistencia correcta de URIs de imágenes.
+
+### Ejecutar los tests
+
+```bash
+npm test
 ```
 
-### iOS
+---
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## ⌨️ Scripts Disponibles
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+- `npm start` → Inicia Metro Bundler.
+- `npm test` → Ejecuta la suite completa de pruebas.
+- `npm run lint` → Verifica estilo y tipado.
+- `npx react-native run-android` → Ejecuta en Android.
+- `npx react-native run-ios` → Ejecuta en iOS.
 
-```sh
-bundle install
+---
+
+## ✅ Checklist de Requerimientos
+
+- [x] Arquitectura Offline-First con WatermelonDB.
+- [x] Sincronización completa de 150 tareas.
+- [x] Componente Nativo `AvatarView` en Android e iOS.
+- [x] Módulo de Cámara con persistencia local.
+- [x] Testing de lógica crítica.
+- [x] Uso documentado de IA.
+- [x] TypeScript en modo estricto.
+- [x] Inserción masiva optimizada (batch).
+
+---
+
+## ⚙️ Instalación y Ejecución
+
+### 1. Clonar el repositorio
+
+```bash
+git clone <URL_DEL_REPOSITORIO>
+cd TaskDashboard
 ```
 
-Then, and every time you update your native dependencies, run:
+### 2. Instalar dependencias
 
-```sh
-bundle exec pod install
+```bash
+npm install --legacy-peer-deps
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### 3. Configuración Nativa
 
-```sh
-# Using npm
-npm run ios
+#### iOS
 
-# OR using Yarn
-yarn ios
+```bash
+cd ios
+pod install
+cd ..
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+#### Android
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+Asegurarse de tener configurado:
 
-## Step 3: Modify your app
+- Android SDK  
+- JDK 17  
 
-Now that you have successfully run the app, let's make changes!
+---
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### 4. Ejecutar la aplicación
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+#### Android
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+```bash
+npx react-native run-android
+```
 
-## Congratulations! :tada:
+#### iOS
 
-You've successfully run and modified your React Native App. :partying_face:
+```bash
+npx react-native run-ios
+```
 
-### Now what?
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
 
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Desarrollado como parte de la **Agile Mobile KATA - Nivel Senior**.

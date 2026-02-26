@@ -1,8 +1,16 @@
 {
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
-    "types": ["jest"]
+    "types": ["jest"],
+    /* Soporte para WatermelonDB */
+    "experimentalDecorators": true, // permite usar @field @ action y otros
+    "emitDecoratorMetadata": true, // permite a la BD leer tipos de runtime
+    "strictPropertyInitialization": false,  // evita errores de inicializacion en modelos
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*"]
+    }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["**/node_modules", "**/Pods"]
+"include": ["src/**/*.ts", "src/**/*.tsx", "**/*.ts", "**/*.tsx", "__tests__/App.test.tsx.bak"],
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js"]
 }

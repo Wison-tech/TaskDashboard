@@ -1,45 +1,31 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
+ * PUNTO DE ENTRADA PRINCIPAL: App.tsx
+ * * Este componente configura el árbol de dependencias global.
+ * Se implementa la arquitectura 'Offline-First' al inyectar la base de datos 
+ * en el nivel más alto de la aplicación[cite: 22, 30].
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import React from 'react';
+import { DatabaseProvider } from '@nozbe/watermelondb/DatabaseProvider';
+import { database } from './src/database'; // Instancia única (Singleton) de WatermelonDB [cite: 21]
+import { DashboardScreen } from './src/screens/DashboardScreen';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
+/**
+ * El componente App envuelve la UI en un Provider reactivo.
+ * Esto permite que cualquier componente hijo observe cambios en la base de datos
+ * local sin necesidad de llamadas manuales a la API.
+ */
+export default function App() {
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+    /**
+     * DatabaseProvider:
+     * Provee la instancia de WatermelonDB al árbol de componentes.
+     * Es crucial para que @nozbe/watermelondb/withObservables funcione,
+     * garantizando una experiencia de usuario fluida y reactiva[cite: 6, 41].
+     */
+    <DatabaseProvider database={database}>
+      {/* DashboardScreen: Pantalla principal que renderiza la lista de tareas [cite: 37] */}
+      <DashboardScreen />
+    </DatabaseProvider>
   );
 }
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;
