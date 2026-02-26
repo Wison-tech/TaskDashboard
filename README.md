@@ -6,13 +6,15 @@ Este proyecto es una aplicación de gestión de tareas de alto rendimiento desar
 
 ## Vista Previa
 
-> Reemplaza las rutas debajo con tus propias capturas (ejemplo: `./assets/dashboard.png`)
-
 | Dashboard & Filtros | Avatar Nativo | Adjuntos (Cámara) |
-|---|---|---|
-| ![Dashboard](./assets/dashboard.png) | ![Avatar](./assets/avatar-native.png) | ![Camera](./assets/camera-module.png) |
+|---------------------|---------------|-------------------|
+| <img src="https://github.com/user-attachments/assets/e8e620e2-f3c2-4ed2-848c-1650a2705472" width="300"/> | <img src="https://github.com/user-attachments/assets/79f099a4-df75-4616-8caf-450f27207b17" width="300"/> | <img src="https://github.com/user-attachments/assets/cb15c17a-e2e7-47b1-a7b7-5001db0cf0e5" width="300"/> |
 
----
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3da7279e-9a43-494b-8f37-2a6d414b53c0" height="500"/>
+  <img src="https://github.com/user-attachments/assets/d4a6528a-09db-40ff-b869-bcbd5b891e82" height="500"/>
+</p>
+
 
 ## Decisiones de Arquitectura
 
